@@ -1,5 +1,5 @@
 ---
-title: "Brainpan 1 - THM Writeup"
+title: "Brainpan 1 - Writeup"
 date: 2025-03-07
 author: "Eric González"
 ---
