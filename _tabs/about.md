@@ -1,6 +1,7 @@
 ---
 layout: page
 title: "Sobre Mí"
+icon: fas fa-info-circle
 permalink: /about/
 ---
 
