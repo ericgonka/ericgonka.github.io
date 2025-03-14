@@ -7,6 +7,10 @@ categories:
 tags:
   - Fácil
   - CTF
+  - Python Deserialization Attack
+  - Arbitrary File Read
+  - Password Cracking
+    
 image: "https://github.com/user-attachments/assets/3dec6a52-dcf5-4186-9a32-75655ae087b8"
 
 ---
