@@ -7,7 +7,7 @@ categories:
 tags:
   - Fácil
   - CTF
-image: "https://github.com/user-attachments/assets/7d025e82-9537-45b9-90d4-4ed977cfd0a1"
+image: "https://github.com/user-attachments/assets/3dec6a52-dcf5-4186-9a32-75655ae087b8"
 
 ---
 
@@ -95,7 +95,7 @@ Guardamos y probamos de crackear el hash que encontramos de `rosa`.
 
 Nos conectamos por SSH en el objetivo con la contraseña que recuperamos para el usuario `rosa`.
 
-## Privilege Escalation
+## Escalada de Privilegios
 
 Al echar un vistazo a los puertos abiertos desde dentro de la sesión SSH, vemos que el puerto 8080 está abierto internamente en localhost.
 
@@ -117,7 +117,7 @@ Un escaneo de `nmap` en el puerto reenviado revela la versión de `AioHTTP`, tam
 
 Al buscar en línea exploits para esta versión, descubrimos este [repositorio](https://github.com/z3rObyte/CVE-2024-23334-PoC) de GitHub que habla sobre una vulnerabilidad de Lectura Arbitraria de Archivos. Esta vulnerabilidad ocurre debido a cómo `AioHTTP` maneja las solicitudes de recursos estáticos. Al hacer fuzzing en el sitio, descubrimos que hay una carpeta llamada `assets` que maneja todos los recursos estáticos.
 
-`
+```bash
 feroxbuster -u http://127.0.0.1:8080/ -w /usr/share/wordlists/dirb/directorylist-medium-2.3.txt
 <SNIP>
 404 GET 1l 3w 14c Auto-filtering found 404-like response
@@ -139,7 +139,7 @@ http://127.0.0.1:8080/assets/js/chart.js
 403 GET 1l 2w 14c http://127.0.0.1:8080/assets/
 403 GET 1l 2w 14c http://127.0.0.1:8080/assets/js
 403 GET 1l 2w 14c http://127.0.0.1:8080/assets/cssf
-`
+```
 
 Esta versión de `AioHTTP` es vulnerable al recorrido de ruta si el administrador del sistema configuró rutas de aplicación con `follow_symlinks=True`. Esto hace que el servidor web valide que el recurso solicitado cae bajo la raíz web de la aplicación.
 
