@@ -1,9 +1,9 @@
 ---
-title: "Offensive Security Certified Professional Exam Report"
-author: ["student@youremailaddress.com", "OSID: XXXX"]
-date: "2023-04-08"
+title: "Jack WP - Professional Exam Report (OSCP Style)"
+author: ["ericgon28@proton.me", "OSID: XXXX"]
+date: "2025-04-14"
 subject: "Markdown"
-keywords: [Markdown, Example]
+keywords: [OSCP, Wordpress]
 subtitle: "OSCP Exam Report"
 lang: "en"
 titlepage: true
@@ -15,7 +15,7 @@ book: true
 classoption: oneside
 code-block-font-size: \scriptsize
 ---
-# Offensive Security OSCP Exam Report
+# Jack WP - Professional Exam Report (OSCP Style)
 
 ## Introduction
 
