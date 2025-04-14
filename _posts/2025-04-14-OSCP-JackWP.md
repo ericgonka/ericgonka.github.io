@@ -99,11 +99,32 @@ u = Enumerate Users
 
 ![{2AD6DF69-3C9F-4234-BD1B-B560B35DD2B4}](https://github.com/user-attachments/assets/b6c5bfb5-4024-44ec-b4cb-1f31cddba8c3)
 
+
+### Explotation
+
 Our results show that we have 3 users of value but very little else in terms of vulnerable plugins or themes.
 
+![{BC9B5831-1AE1-4D3B-90FA-4F47A20D119A}](https://github.com/user-attachments/assets/72102aa0-a1ff-4e71-bf18-8549781ea97f)
+
+![{BFC1CDDB-F3EF-4C1B-BA54-16BA0B39DD11}](https://github.com/user-attachments/assets/ce2d3d48-8953-4f82-a71d-c59091d38246)
 
 
-### Initial Access - Buffer Overflow
+Our next step will be to see if we can get a valid password for one of the three users. From our WPScan we can see that XML-RPC is accessible so we can use WPScan to execute the bruteforce attack.
+
+![{D12AE816-5531-44B9-87F9-AA10C19B9233}](https://github.com/user-attachments/assets/e11f26eb-ef75-44ca-aa32-775a9d574199)
+
+In this case, it worked and I quickly got the password for one of the accounts.
+
+User              | Password
+------------------|----------------------------------------
+Wendy             | changelater
+
+![{93463B0A-29C8-49FB-96BF-9E3CA3BE5C53}](https://github.com/user-attachments/assets/22419621-671c-46bf-aaa1-de03e7817010)
+
+
+
+
+### Initial Access - WordPress Plugin User Role Editor < 4.25 - Privilege Escalation
 
 **Vulnerability Explanation:** Ability Server 2.34 is subject to a buffer overflow vulnerability in STOR field.
 Attackers can use this vulnerability to cause arbitrary remote code execution and take completely control over the system.
