@@ -20,7 +20,7 @@ tags:
   - Difícil
   - CTF
   - Wordpress
-image: "https://github.com/user-attachments/assets/bd789037-b892-49f7-8801-73e6daf61420"
+image: "https://github.com/user-attachments/assets/a5356a21-0b2a-42d3-89ee-3e0d540acd32"
 ---
 # Jack WP - Professional Exam Report (OSCP Style)
 
