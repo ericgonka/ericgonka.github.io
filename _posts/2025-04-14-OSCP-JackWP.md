@@ -14,6 +14,13 @@ titlepage-rule-height: 2
 book: true
 classoption: oneside
 code-block-font-size: \scriptsize
+categories: 
+  - TryHackMe
+tags:
+  - Difícil
+  - CTF
+  - Wordpress
+image: "https://github.com/user-attachments/assets/bd789037-b892-49f7-8801-73e6daf61420"
 ---
 # Jack WP - Professional Exam Report (OSCP Style)
 
