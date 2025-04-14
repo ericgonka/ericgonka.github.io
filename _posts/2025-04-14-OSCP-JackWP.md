@@ -55,14 +55,32 @@ We have to have the following requirements:
 
 Server IP Address | Ports Open
 ------------------|----------------------------------------
-192.168.1.1       | **TCP**: 21,22,25,80,443
+10.10.97.82       | **TCP**: 22,80
 
 **Nmap Scan Results:**
 
+The Nmap scan reveals that Port 22 and Port 80 is open and running OpenSSH 7.2p2 and Apache 2.4.18 respectively.
 
-**FTP Enumeration**
+![{DE40A305-E741-4BB4-80B0-053008D4FAC3}](https://github.com/user-attachments/assets/33425e15-b076-4c3e-8ab8-f72f58ffeb9a)
 
-_Upon manual enumeration of the available FTP service, John noticed it was running an outdated version 2.3.4 that is prone to the remote buffer overflow vulnerability._
+
+**SSH Enumeration**
+
+From experience, we know that SSH is rarely vulnerable, and especially in this version, we searched for vulnerabilities with "searchsploit" and found a Python script that allows us to list existing users.
+We'll leave it at that for now, as we don't have a list of possible valid users.
+
+![{D2BF5A41-E380-4967-8F99-EBC9A5EE59B1}](https://github.com/user-attachments/assets/4c1f1cdd-c793-4661-b902-29437000055a)
+
+**HTTP Enumeration**
+
+We add the jack.thm domain referencing the machine's IP (10.10.97.82) in /etc/hosts.
+
+![{462A6FF3-E1E5-464D-B4C3-CF0E06576281}](https://github.com/user-attachments/assets/9d462718-6131-43f3-9425-a7dc3b9d1976)
+
+The server is running Jack’s personal blog.
+
+![{5CD26E73-DFDF-4301-9FB7-B3F995F98876}](https://github.com/user-attachments/assets/1232d4d8-9053-4936-9596-9c1d9dbf4df8)
+
 
 ### Initial Access - Buffer Overflow
 
