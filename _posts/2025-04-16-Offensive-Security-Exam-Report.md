@@ -165,7 +165,7 @@ All artifacts from the assessment were removed, including shells, scripts, accou
 
 ## 4. Additional Items
 
-### Proof and Local Contents
+### 4.1 Proof and Local Contents
 
 | IP Address      | Hostname   | Local.txt         | Proof.txt         |
 |-----------------|------------|-------------------|-------------------|
