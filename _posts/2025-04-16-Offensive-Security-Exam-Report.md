@@ -6,23 +6,20 @@ author: example@example.example
 osid: XXXXX
 ---
 
-# Offensive Security  
-## Penetration Test Report for OSCP Exam  
-**Version:** 3.2  
-**OSID:** XXXXX  
-**Email:** example@example.example  
+# Offensive Security Penetration Test Report for OSCP Exam
+**Version**: 3.2  
+**OSID**: XXXXX  
+**Email**: example@example.example  
 
-![image](https://github.com/user-attachments/assets/d6b50208-9978-426d-bdd3-6cffcd6778c7)
+![OSCP Logo](https://github.com/user-attachments/assets/d6b50208-9978-426d-bdd3-6cffcd6778c7)
 
-© All rights reserved to Offensive Security, 2014
-
+> © All rights reserved to Offensive Security, 2014  
 > No part of this publication, in whole or in part, may be reproduced, copied, transferred or any other right reserved to its copyright owner without prior written permission from Offensive Security.
 
 ---
 
 ## Table of Contents
-
-1. [Offensive Security Exam Penetration Test Report](#1-offensive-security-exam-penetration-test-report)  
+1. [Offensive Security Exam Penetration Test Report](#1-offensive-security-exam-penetration-test-report)
    - [1.1 Introduction](#11-introduction)  
    - [1.2 Objective](#12-objective)  
    - [1.3 Requirements](#13-requirements)  
@@ -34,82 +31,68 @@ osid: XXXXX
    - [3.3 Maintaining Access](#33-maintaining-access)  
    - [3.4 House Cleaning](#34-house-cleaning)  
 4. [Additional Items](#4-additional-items)  
-   - Appendix 1 - Proof and Local Contents  
-   - Appendix 2 - Metasploit/Meterpreter Usage  
-   - Appendix 3 - Completed Buffer Overflow Code  
+   - [Appendix 1 - Proof and Local Contents](#appendix-1---proof-and-local-contents)  
+   - [Appendix 2 - Metasploit/Meterpreter Usage](#appendix-2---metasploitmeterpreter-usage)  
+   - [Appendix 3 - Completed Buffer Overflow Code](#appendix-3---completed-buffer-overflow-code)
 
 ---
 
 ## 1. Offensive Security Exam Penetration Test Report
 
 ### 1.1 Introduction
-
-The Offensive Security Exam penetration test report contains all efforts that were conducted in order to pass the Offensive Security exam. This report will be graded from a standpoint of correctness and fullness to all aspects of the exam. The purpose of this report is to ensure that the student has a full understanding of penetration testing methodologies as well as the technical knowledge to pass the qualifications for the Offensive Security Certified Professional.
+The Offensive Security Exam penetration test report outlines all actions and efforts taken during the Offensive Security exam. This report is graded based on the thoroughness, accuracy, and completion of each aspect of the exam. It ensures the student demonstrates an in-depth understanding of penetration testing methodologies as well as the technical knowledge required to earn the Offensive Security Certified Professional (OSCP) certification.
 
 ### 1.2 Objective
-
-The objective of this assessment is to perform an internal penetration test against the Offensive Security Exam network. The student is tasked with following a methodical approach in obtaining access to the objective goals. This test should simulate an actual penetration test and how you would start from beginning to end, including the overall report.
+The objective is to perform an internal penetration test on the Offensive Security Exam network. The student must follow a systematic approach to achieving the assigned goals. This test simulates an actual penetration test, from start to finish, and includes a comprehensive report.
 
 ### 1.3 Requirements
-
-The student will be required to fill out this penetration testing report fully and to include the following sections:
-
-- Overall High-Level Summary and Recommendations (non-technical)  
-- Methodology walkthrough and detailed outline of steps taken  
-- Each finding with included screenshots, walkthrough, sample code, and proof.txt if applicable  
-- Any additional items that were not included  
+The student is required to fill out this report fully, including the following sections:
+- High-level summary and recommendations (non-technical)
+- Detailed methodology outline
+- Each finding with screenshots, walkthroughs, sample code, and proof.txt if applicable
+- Additional items if not included in previous sections
 
 ---
 
 ## 2. High-Level Summary
 
-I was tasked with performing an internal penetration test towards Offensive Security Exam. An internal penetration test is a dedicated attack against internally connected systems. The focus of this test is to perform attacks, similar to those of a hacker and attempt to infiltrate Offensive Security’s internal exam systems – the `THINC.local` domain. My overall objective was to evaluate the network, identify systems, and exploit flaws while reporting the findings back to Offensive Security.
-
-When performing the internal penetration test, there were several alarming vulnerabilities that were identified on Offensive Security’s network. When performing the attacks, I was able to gain access to multiple machines, primarily due to outdated patches and poor security configurations. During the testing, I had administrative level access to multiple systems. All systems were successfully exploited and access granted.
-
 ### Compromised Hosts
-
-- `192.168.xx.xx (hostname)` – Name of initial exploit  
-- `192.168.xx.xx (hostname)` – Name of initial exploit  
-- `192.168.xx.xx (hostname)` – Name of initial exploit  
-- `192.168.xx.xx (hostname)` – Name of initial exploit  
-- `192.168.xx.xx (hostname)` – Buffer Overflow (BOF)
+- **192.168.xx.xx (hostname)** – Initial exploit used  
+- **192.168.xx.xx (hostname)** – Initial exploit used  
+- **192.168.xx.xx (hostname)** – Initial exploit used  
+- **192.168.xx.xx (hostname)** – Initial exploit used  
+- **192.168.xx.xx (hostname)** – Buffer Overflow (BOF)
 
 ---
 
 ### 2.1 Recommendations
-
-I recommend patching the vulnerabilities identified during the testing to ensure that an attacker cannot exploit these systems in the future. These systems require frequent patching and should remain on a regular patch program to protect against future vulnerabilities.
+It is recommended that the identified vulnerabilities be patched immediately to prevent exploitation. These systems require regular updates and patches to avoid future breaches.
 
 ---
 
 ## 3. Methodologies
 
 ### 3.1 Information Gathering
-
-The information gathering portion of a penetration test focuses on identifying the scope of the penetration test. During this penetration test, I was tasked with exploiting the exam network. The specific IP addresses were:
-
+Information gathering is critical in penetration testing. In this case, the scope of the test covered the following IP addresses:
 - `192.168.xx.xx`
 - `192.168.xx.xx`
 - `192.168.xx.xx`
 - `192.168.xx.xx`
-- `192.168.57.112` (b0f-vic)
+- `192.168.57.112 (b0f-vic)`
 
 ---
 
 ### 3.2 Penetration
 
-_Repeat for each system as shown below:_
+#### System IP: `192.168.xx.xx`
 
-#### System IP: 192.168.xx.xx
-
-##### Service Enumeration
-
+**Service Enumeration:**
 - **Server IP Address:** 192.168.xx.xx  
 - **Ports Open:**  
-  - TCP:  
-  - UDP:  
+  - TCP: X, Y, Z  
+  - UDP: A, B, C  
 - **Nmap Scan Results:**  
+
   ```
   (Insert Nmap output here)
   ```
