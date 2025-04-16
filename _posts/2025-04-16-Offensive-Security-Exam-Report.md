@@ -25,7 +25,6 @@
    - [3.3 Maintaining Access](#33-maintaining-access)  
    - [3.4 House Cleaning](#34-house-cleaning)  
 4. [Additional Items](#4-additional-items)  
-   - [4.1 Proof and Local Contents](#41-proof-and-local-contents)
 
 ---
 
@@ -165,17 +164,5 @@ All artifacts from the assessment were removed, including shells, scripts, accou
 ---
 
 ## 4. Additional Items
-
-### 4.1 Proof and Local Contents
-
-| IP Address      | Hostname   | Local.txt         | Proof.txt         |
-|-----------------|------------|-------------------|-------------------|
-| 192.168.xx.xx   | Host1      | `hash1`           | `hash1_proof`     |
-| 192.168.xx.xx   | Host2      | `hash2`           | `hash2_proof`     |
-| 192.168.xx.xx   | Host3      | `hash3`           | `hash3_proof`     |
-| 192.168.xx.xx   | Host4      | `hash4`           | `hash4_proof`     |
-| 192.168.57.112  | b0f-vic    | `hash5`           | `hash5_proof`     |
-
----
 
 **End of Report**
