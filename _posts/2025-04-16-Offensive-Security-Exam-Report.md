@@ -1,11 +1,5 @@
 ![image](https://github.com/user-attachments/assets/b6e362c9-0bb2-495d-a442-ee52fe1caa4b)
 
----
-title: Offensive Security Exam Report
-author: example@example.example
-osid: XXXXX
----
-
 # Offensive Security Penetration Test Report for OSCP Exam
 **Version**: 3.2  
 **OSID**: XXXXX  
