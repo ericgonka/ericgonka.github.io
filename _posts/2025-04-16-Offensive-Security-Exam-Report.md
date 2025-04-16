@@ -32,9 +32,6 @@ osid: XXXXX
    - [3.4 House Cleaning](#34-house-cleaning)  
 4. [Additional Items](#4-additional-items)  
    - [Appendix 1 - Proof and Local Contents](#appendix-1---proof-and-local-contents)  
-   - [Appendix 2 - Metasploit/Meterpreter Usage](#appendix-2---metasploitmeterpreter-usage)  
-   - [Appendix 3 - Completed Buffer Overflow Code](#appendix-3---completed-buffer-overflow-code)
-
 ---
 
 ## 1. Offensive Security Exam Penetration Test Report
