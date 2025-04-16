@@ -126,8 +126,6 @@ _Repeat for each system as shown below:_
 
 ##### Local.txt Proof Screenshot
 
-![screenshot](ruta/a/local_screenshot1.png)
-
 **Local.txt Contents:**
 ```
 insert hash or content
@@ -149,8 +147,6 @@ insert hash or content
 
 ##### Proof Screenshot
 
-![screenshot](ruta/a/proof_screenshot1.png)
-
 **Proof.txt Contents:**
 ```
 insert hash or content
@@ -166,8 +162,6 @@ _Repeat for other machines as needed_
 
 - _BOF notes here_  
 - **Proof Screenshot:**
-
-![screenshot](ruta/a/bof_proof.png)
 
 - **Completed Buffer Overflow Code:**
 
