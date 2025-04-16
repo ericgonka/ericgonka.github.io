@@ -25,8 +25,7 @@
    - [3.3 Maintaining Access](#33-maintaining-access)  
    - [3.4 House Cleaning](#34-house-cleaning)  
 4. [Additional Items](#4-additional-items)  
-   - [4.1 Proof and Local Contents](#appendix-1-proof-and-local-contents)
-
+   - [4.1 Proof and Local Contents](#41-proof-and-local-contents)  
 ---
 
 ## 1. Offensive Security Exam Penetration Test Report
@@ -166,7 +165,7 @@ All artifacts from the assessment were removed, including shells, scripts, accou
 
 ## 4. Additional Items
 
-### Appendix 1 - Proof and Local Contents
+### Proof and Local Contents
 
 | IP Address      | Hostname   | Local.txt         | Proof.txt         |
 |-----------------|------------|-------------------|-------------------|
