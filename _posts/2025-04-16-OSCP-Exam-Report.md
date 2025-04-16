@@ -199,20 +199,4 @@ All artifacts from the assessment were removed, including shells, scripts, accou
 
 ---
 
-### Appendix 2 - Metasploit/Meterpreter Usage
-
-I used my Metasploit/Meterpreter allowance on the following machine:
-
-- `192.168.xx.xx`
-
----
-
-### Appendix 3 - Completed Buffer Overflow Code
-
-```c
-// Insert your BOF code here
-```
-
----
-
 **End of Report**
