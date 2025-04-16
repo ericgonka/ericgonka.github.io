@@ -85,10 +85,13 @@ Information gathering is critical in penetration testing. In this case, the scop
 
 **Service Enumeration:**
 - **Server IP Address:** 192.168.xx.xx  
-- **Ports Open:**  
-  - TCP: X, Y, Z  
-  - UDP: A, B, C  
-- **Nmap Scan Results:**  
+
+| Protocol | Port(s)       |
+|----------|---------------|
+| TCP      | X, Y, Z       |
+| UDP      | A, B, C       |
+
+- **Nmap Scan Results:**
 
   ```
   (Insert Nmap output here)
