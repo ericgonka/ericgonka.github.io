@@ -31,7 +31,7 @@ osid: XXXXX
    - [3.3 Maintaining Access](#33-maintaining-access)  
    - [3.4 House Cleaning](#34-house-cleaning)  
 4. [Additional Items](#4-additional-items)  
-   - [Appendix 1 - Proof and Local Contents](#appendix-1---proof-and-local-contents)  
+   - [4.1 - Proof and Local Contents](#appendix-1---proof-and-local-contents)  
 ---
 
 ## 1. Offensive Security Exam Penetration Test Report
