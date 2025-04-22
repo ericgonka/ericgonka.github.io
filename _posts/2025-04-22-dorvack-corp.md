@@ -22,10 +22,6 @@
 3. [Methodologies](#3-methodologies)  
    - [3.1 Information Gathering](#31-information-gathering)  
    - [3.2 Penetration](#32-penetration)  
-   - [3.3 Maintaining Access](#33-maintaining-access)  
-   - [3.4 House Cleaning](#34-house-cleaning)  
-4. [Additional Items](#4-additional-items)  
-
 ---
 
 ## 1. Offensive Security Exam Penetration Test Report
