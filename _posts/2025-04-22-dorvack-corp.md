@@ -20,7 +20,7 @@ tags:
   - Difícil
   - CTF
   - Wordpress
-image: "https://github.com/user-attachments/assets/8846c90d-a9fe-4cc7-bcdc-a7513b3641eb"
+image: "https://github.com/user-attachments/assets/e13b2cde-8398-4bec-9433-50d9f53f2415"
 ---
 
 ![image](https://github.com/user-attachments/assets/b6e362c9-0bb2-495d-a442-ee52fe1caa4b)
