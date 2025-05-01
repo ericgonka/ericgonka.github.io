@@ -1,6 +1,27 @@
 ---
-
+title: "Penetration Test Report Dorvack.Corp LAB 10"
+author: ["ericgon28@proton.me", "OSID: XXXX"]
+date: "2025-05-1"
+subject: "Markdown"
+keywords: [OSCP, Wordpress]
+subtitle: "OSCP Exam Report"
+lang: "en"
+titlepage: true
+titlepage-color: "DC143C"
+titlepage-text-color: "FFFFFF"
+titlepage-rule-color: "FFFFFF"
+titlepage-rule-height: 2
+book: true
+classoption: oneside
+code-block-font-size: \scriptsize
+categories: 
+  - OSCP
+tags:
+  - Difícil
+  - CTF
+  - Wordpress
 image: "https://github.com/user-attachments/assets/743cc295-f9d0-424d-945b-67493601b539"
+---
 
 ![image](https://github.com/user-attachments/assets/b6e362c9-0bb2-495d-a442-ee52fe1caa4b)
 
