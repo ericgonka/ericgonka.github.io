@@ -74,7 +74,11 @@ Information gathering is critical in penetration testing. In this case, the scop
 
 - **Nmap Scan Results:**
 
+We scan the domain with nmap to see the services and versions running on open ports.
+
  ![image](https://github.com/user-attachments/assets/9f843fd1-2981-4afd-89d2-71ad84bdee7b)
+
+ Vemos que se aplica host discovery, ya que al acceder on la direccion ip via web vemos el servicio de Apache, pero si editamos el 
 
 ![image](https://github.com/user-attachments/assets/af8b35c6-89c5-450a-8d79-1471319d0cea)
 
