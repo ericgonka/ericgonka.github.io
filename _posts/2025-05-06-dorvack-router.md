@@ -1,7 +1,7 @@
 ---
-title: "Penetration Test Report Dorvack.Corp LAB 10"
+title: "Penetration Test Report Dorvack.Corp LAB 11"
 author: ["ericgon28@proton.me", "OSID: XXXX"]
-date: "2025-05-1"
+date: "2025-05-6"
 subject: "Markdown"
 keywords: [OSCP, Wordpress]
 subtitle: "OSCP Exam Report"
@@ -20,7 +20,8 @@ tags:
   - Difícil
   - CTF
   - Wordpress
-image: "https://github.com/user-attachments/assets/e13b2cde-8398-4bec-9433-50d9f53f2415"
+image: "https://github.com/user-attachments/assets/c8908e0f-4727-4620-8c9d-6ef5bd8080f2"
+
 ---
 
 ![image](https://github.com/user-attachments/assets/b6e362c9-0bb2-495d-a442-ee52fe1caa4b)
