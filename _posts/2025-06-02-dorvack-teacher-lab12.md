@@ -19,13 +19,14 @@ categories:
 tags:
   - Difícil
   - CTF
-image: "https://github.com/user-attachments/assets/b241dd9a-02ef-4492-b64c-9876a2969978"
+image: "https://github.com/user-attachments/assets/d2511954-8b56-4fda-a562-4aa5e3e53dd1"
 
 ---
 
-![image](https://github.com/user-attachments/assets/b6e362c9-0bb2-495d-a442-ee52fe1caa4b)
+![{C2441A2B-FEDB-4F44-BBE6-ED9A3038C771}](https://github.com/user-attachments/assets/e61647b2-9676-4fc8-9a11-7d01868fedea)
 
-#Penetration Test Report Dorvack-Files LAB 13
+
+#Penetration Test Report Dorvack-Teacher LAB 12
 **Version**: 3.2  
 **OSID**: XXXXX  
 **Email**: ericgon28@proton.me 
