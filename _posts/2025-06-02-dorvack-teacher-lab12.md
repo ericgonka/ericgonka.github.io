@@ -23,7 +23,7 @@ image: "https://github.com/user-attachments/assets/d2511954-8b56-4fda-a562-4aa5e
 
 ---
 
-![{C2441A2B-FEDB-4F44-BBE6-ED9A3038C771}](https://github.com/user-attachments/assets/e61647b2-9676-4fc8-9a11-7d01868fedea)
+![image](https://github.com/user-attachments/assets/0c2115d0-30f0-499e-a110-7e88e069a4d1)
 
 
 #Penetration Test Report Dorvack-Teacher LAB 12
