@@ -129,49 +129,49 @@ _
 - **Severity:** Critical
 
 
-Despúes deun tiempo investigando vemos un script para la versión 3.9 de moodle que es bastante interesante, ya que nos dice queés un RCE con autenticación, y nosotos tenemos un usuario y contraseña válidos.
+After some time researching, we found a script for Moodle version 3.9 that is quite interesting, as it indicates it’s an authenticated RCE, and we have valid username and password credentials.
 
 ![image](https://github.com/user-attachments/assets/0b411672-c6d9-419d-963d-295e65a36d89)
 
-Ejecutamos el script pero no funciona, ya que tiene que agregar nuestro usuario al grupo `manager` para asi poder acceder al panel de administración y colar la reverse shell.
+We run the script, but it doesn’t work, as it needs to add our user to the `manager` group in order to access the admin panel and insert the reverse shell.
 
 ![image](https://github.com/user-attachments/assets/7fdfcd90-a68b-4233-95a6-5c35fd0236f6)
 
-Después de modificar mucho el script en base a las respuestas del servidor y quitando lo que no es necesario vemos que parece que ha funcionado y ya tenemos acceso al panel de administración.
+After heavily modifying the script based on the server’s responses and removing what wasn’t necessary, it seems to have worked, and we now have access to the admin panel.
 
 ![image](https://github.com/user-attachments/assets/a80a8258-f2a3-4b81-8526-9a7951be97f8)
 
-Vemos que podemos subir un zip simulando que vamos a instalar un nuevo módulo, pero en realidad es para ejecutar comandos.
+We see that we can upload a zip file pretending we are installing a new module, but in reality, it’s to execute commands.
 
 ![image](https://github.com/user-attachments/assets/88e3bc4f-8ef6-4120-8291-e96d9ab62189)
 
-Entramos en el apartado de **Instalar módulos externos** e instalamos el zip.
+We go to the section for **Instalar módulos externos** and install the zip.
 
 ![image](https://github.com/user-attachments/assets/54cf1830-4fe2-4fb8-9223-a9b19d957079)
 
-Lo valida y continuamos la instal·lación.
+It validates it and we proceed with the installation.
 
 ![image](https://github.com/user-attachments/assets/d7e45ad5-35c6-46a8-9798-b02b035014bc)
 
-Nos da información respecto a la instal·lación y a la comprovacion de plugins.
+It gives us information regarding the installation and plugin verification.
 
 ![image](https://github.com/user-attachments/assets/a0cae167-107b-43ac-985c-8ae18fdf420b)
 
 ![image](https://github.com/user-attachments/assets/971965cc-ea26-44b6-80ad-793b0e8ee472)
 
-Provamos de ejecutar un simple `id` y vemos que efectivamente tenemos capacidad de ejecución de comandos.
+We try to execute a simple `id` command and see that we do, in fact, have command execution capabilities.
 
 ![image](https://github.com/user-attachments/assets/fb989c0b-f6bd-4f40-8290-d15c624de85a)
 
-Nos mandamos una reverse shell codificada en url.
+We send ourselves a URL-encoded reverse shell.
 
 ![image](https://github.com/user-attachments/assets/e3ff835e-d9fc-4bba-b035-c3c4ca0f4e9b)
 
-Nos ponemos en escucha y conseguimos el acceso al sistema.
+We start listening and gain access to the system.
 
 ![image](https://github.com/user-attachments/assets/b1786e81-d20a-4b81-978b-0210802c1ea2)
 
-Vemos los usuarios disponibles en el sistema, y como vemos noelia vamos a migrar con la contraseña que ya tenemos.
+We check the available users on the system, and since we see `noelia`, we proceed to migrate using the password we already have.
 
 ![image](https://github.com/user-attachments/assets/8ed8aabc-685d-418b-b363-0b3641465bf1)
 
@@ -195,19 +195,19 @@ Consider deploying intrusion detection tools to flag exploitation attempts.
 _  
 - **Severity:** Critical
 
-Vemos los permisos SUID y me llama especialmente la atención el `pkexec`.
+We check the SUID permissions and `pkexec` particularly catches our attention.
 
 ![image](https://github.com/user-attachments/assets/ea09b933-4c64-448c-85be-de82bf124479)
 
-Hay una forma de escalar privilegios utilizando un exploit llamado `Polkit's Pkexec`.
+There’s a way to escalate privileges using an exploit called `Polkit's Pkexec`.
 
 ![image](https://github.com/user-attachments/assets/a38b4f92-1124-4bda-b17f-9806a5302d18)
 
-Simplemente tenemos que pasar el script `polkit_pwkit.py` a la máquina víctima y ejecutarlo.
+We just need to transfer the `polkit_pwkit.py` script to the target machine and execute it.
 
 ![image](https://github.com/user-attachments/assets/a93b4eaa-2393-4bb5-a038-f01a743ad877)
 
-Y ya seríamos **root** y podríamos leer la flag.
+And we would now be **root** and able to read the flag.
 
 ![image](https://github.com/user-attachments/assets/2170ec29-54c3-42b8-b6b0-4b08a75832fd)
 
