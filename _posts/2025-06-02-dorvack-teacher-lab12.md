@@ -70,7 +70,7 @@ The student is required to fill out this report fully, including the following s
 ## 2. High-Level Summary
 
 ### Compromised Hosts
-- **192.168.1.123 (Dorvack-Files)** – Dorvack-Files Web
+- **192.168.1.121 (formacion.dorvack.corp)** – Dorvack-Teacher Web
 ---
 
 ### 2.1 Recommendations
@@ -89,163 +89,133 @@ Information gathering is critical in penetration testing. In this case, the scop
 ### 3.2 Penetration
 
 #### System IP: `172.20.0.235` 
-#### Intranet Dorvack-Files IP: `192.168.1.123`
+#### Intranet Dorvack-Teacher IP: `192.168.1.121`
 
 **Service Enumeration:**
-- **Dorvack-Files IP Address:** 192.168.1.123
+- **Dorvack-Teacher IP Address:** 192.168.1.121
 
 | Protocol | Port(s)       |
 |----------|---------------|
-| TCP      | 80, 3306      |
+| TCP      | 80            |
 | UDP      |               |
 
 
-- **Nmap Scan Results:**
+Configuramos el DNS en el BurpSuite ya que nos redirige al subdominio `formacion.dorvack.corp`
 
-We scan with nmap and we get these results.
-
-![{8E0EF2D0-BB42-49D1-A413-33C51971ADFB}](https://github.com/user-attachments/assets/9e36b115-b9ea-429d-bb73-b6d47bae2b98)
+![image](https://github.com/user-attachments/assets/cd5a4ab0-cb4c-479e-8f03-08e17eb03be6)
 
 We connect to the web to see what it is about.
 
-![image](https://github.com/user-attachments/assets/0df4d47a-bc6b-44e8-b3a3-f60e42d4fcef)
-
-Since I didn't have valid passwords, I understood that I had to get some kind of credentials to access the website.
-The "?page=" parameter caught my attention in the URL and I tried a Local File Inclusion without visible results.
-
-![{499AF8EB-DF11-4B30-B9DC-2C258C3D2768}](https://github.com/user-attachments/assets/059f0374-cae0-4920-9120-cdfd1164b07d)
-
-Nikto gives us information about a config.php file on the website.
-
-![{02C09580-A733-4816-9DE0-6B280AA24317}](https://github.com/user-attachments/assets/e73a8a23-b135-4d8f-9787-dda096540dd7)
-
-When I look at the index, without the php extension, it makes me think that the server is implementing the ". .php" extension.
-
-![{ED35474D-379E-4787-8406-C5242C99DD81}](https://github.com/user-attachments/assets/2a78b04c-8f12-4271-8be1-9cc206423776)
+![image](https://github.com/user-attachments/assets/8b898e55-26a7-414a-8290-8f91ab6a1cd4)
 
 ##### Initial Shell Vulnerability Exploited  
 
-- _Local File Inclusion with Wrappers_  
+- _Moodle 3.9 - Remote Code Execution (RCE) (Authenticated)_  
 - **Vulnerability Explanation:**  
-  _Certain PHP-based web applications improperly sanitize user input when including files, allowing attackers to exploit Local File Inclusion (LFI) vulnerabilities. When wrappers such as php://filter are allowed, the impact can escalate beyond simple file inclusion. This may lead to:
-
-Source code disclosure (php://filter/convert.base64-encode/resource=...)_  
-
+  _This vulnerability allows an authenticated user with specific permissions (such as a teacher or manager) to execute arbitrary PHP code on the underlying server. The issue arises due to improper validation of user-supplied input in certain Moodle components (such as quiz or file upload plugins), allowing malicious payloads to be injected and executed on the server. Once exploited, this can lead to full server compromise._
+  
 - **Vulnerability Fix:**  
   _To mitigate this issue:
+To mitigate this issue:
 
-Always validate and sanitize user-supplied input.
+Upgrade to the latest supported version of Moodle, as the vulnerability has been patched in newer releases.
 
-Disable unused PHP wrappers in php.ini (e.g., allow_url_include, allow_url_fopen).
+Apply any available security patches from the official Moodle security advisories.
 
-Implement allowlists for file paths and avoid dynamic file inclusion when possible.
+Restrict user roles and permissions to the minimum necessary, especially those with file upload or quiz configuration capabilities.
 
-Keep software and dependencies up to date to benefit from upstream security patches.
+Monitor logs for unusual activity from authenticated users.
 _  
 - **Severity:** Critical
-- **Proof of Concept Code:**
+
+
+Despúes deun tiempo investigando vemos un script para la versión 3.9 de moodle que es bastante interesante, ya que nos dice queés un RCE con autenticación, y nosotos tenemos un usuario y contraseña válidos.
+
+![image](https://github.com/user-attachments/assets/0b411672-c6d9-419d-963d-295e65a36d89)
+
+Ejecutamos el script pero no funciona, ya que tiene que agregar nuestro usuario al grupo `manager` para asi poder acceder al panel de administración y colar la reverse shell.
+
+![image](https://github.com/user-attachments/assets/7fdfcd90-a68b-4233-95a6-5c35fd0236f6)
+
+Después de modificar mucho el script en base a las respuestas del servidor y quitando lo que no es necesario vemos que parece que ha funcionado y ya tenemos acceso al panel de administración.
+
+![image](https://github.com/user-attachments/assets/a80a8258-f2a3-4b81-8526-9a7951be97f8)
+
+Vemos que podemos subir un zip simulando que vamos a instalar un nuevo módulo, pero en realidad es para ejecutar comandos.
+
+![image](https://github.com/user-attachments/assets/88e3bc4f-8ef6-4120-8291-e96d9ab62189)
+
+Entramos en el apartado de **Instalar módulos externos** e instalamos el zip.
+
+![image](https://github.com/user-attachments/assets/54cf1830-4fe2-4fb8-9223-a9b19d957079)
+
+Lo valida y continuamos la instal·lación.
+
+![image](https://github.com/user-attachments/assets/d7e45ad5-35c6-46a8-9798-b02b035014bc)
+
+Nos da información respecto a la instal·lación y a la comprovacion de plugins.
+
+![image](https://github.com/user-attachments/assets/a0cae167-107b-43ac-985c-8ae18fdf420b)
+
+![image](https://github.com/user-attachments/assets/971965cc-ea26-44b6-80ad-793b0e8ee472)
+
+Provamos de ejecutar un simple `id` y vemos que efectivamente tenemos capacidad de ejecución de comandos.
+
+![image](https://github.com/user-attachments/assets/fb989c0b-f6bd-4f40-8290-d15c624de85a)
+
+Nos mandamos una reverse shell codificada en url.
+
+![image](https://github.com/user-attachments/assets/e3ff835e-d9fc-4bba-b035-c3c4ca0f4e9b)
+
+Nos ponemos en escucha y conseguimos el acceso al sistema.
+
+![image](https://github.com/user-attachments/assets/b1786e81-d20a-4b81-978b-0210802c1ea2)
+
+Vemos los usuarios disponibles en el sistema, y como vemos noelia vamos a migrar con la contraseña que ya tenemos.
+
+![image](https://github.com/user-attachments/assets/8ed8aabc-685d-418b-b363-0b3641465bf1)
+
+##### Privilege Escalation Vulnerability Exploited  
+
+- _SUID Polkit's Pkexec_  
+- **Vulnerability Explanation:**  
+  _CVE-2021-4034 (nicknamed PwnKit) is a local privilege escalation vulnerability found in pkexec, a SUID-root program that is part of Polkit. The vulnerability exists because pkexec does not properly validate the number of arguments passed to it. This allows an attacker to manipulate environment variables—specifically GCONV_PATH—to load a malicious shared library and execute arbitrary code as root. Since pkexec is installed by default on many Linux distributions and is SUID-root, this can lead to full system compromise._
   
-```bash
-http://target.com/index.php?page=php://filter/convert.base64-encode/resource=config.php
- ```
+- **Vulnerability Fix:**  
+  _To mitigate this issue:
+Update to the latest version of Polkit where the vulnerability has been patched.
 
-I'm going to implement the wrappers, let's see if I can use an LFI to read the config file that Nikto found for us and decode it into base64.
-We capture the request and go to the burpsuite repeater to run the tests.
+Remove the SUID bit from pkexec if it's not needed:
 
-![image](https://github.com/user-attachments/assets/9a5ac5d7-3a0d-4000-82e9-5f460091df68)
+chmod 0755 /usr/bin/pkexec
 
-And indeed we see a base64 string in the response.
+Monitor user activity and audit logs for unusual privilege escalation behavior.
 
-![image](https://github.com/user-attachments/assets/127c54cc-901b-41a5-95bb-682bc8bcc788)
+Consider deploying intrusion detection tools to flag exploitation attempts.
+_  
+- **Severity:** Critical
 
-We decode and see a user and a password from the User database.
+Vemos los permisos SUID y me llama especialmente la atención el `pkexec`.
 
-![image](https://github.com/user-attachments/assets/c04ceb57-bceb-4229-abff-027c6d452902)
+![image](https://github.com/user-attachments/assets/ea09b933-4c64-448c-85be-de82bf124479)
 
-As we have seen previously, the open mysql port, we are going to connect with the obtained credentials.
+Hay una forma de escalar privilegios utilizando un exploit llamado `Polkit's Pkexec`.
 
-![image](https://github.com/user-attachments/assets/c752c9b6-bf2f-4e9d-9b3c-6e9db4de5c5e)
+![image](https://github.com/user-attachments/assets/a38b4f92-1124-4bda-b17f-9806a5302d18)
 
-We accessed the database and saw the users and passwords.
+Simplemente tenemos que pasar el script `polkit_pwkit.py` a la máquina víctima y ejecutarlo.
 
-![image](https://github.com/user-attachments/assets/888ae1af-d754-486a-bb46-fd569681d715)
+![image](https://github.com/user-attachments/assets/a93b4eaa-2393-4bb5-a038-f01a743ad877)
 
-![image](https://github.com/user-attachments/assets/c7260148-27aa-4aaf-98ed-01e2eaca3c58)
+Y ya seríamos **root** y podríamos leer la flag.
 
-![image](https://github.com/user-attachments/assets/a42fd31f-aadc-4cd2-be46-2559fba71dd2)
-
-We decode and log in to the web.
-
-![image](https://github.com/user-attachments/assets/bd0e45a2-2e15-48bf-8ddd-883d43bf46cc)
-
-![image](https://github.com/user-attachments/assets/4e20fcda-36dd-40dc-aa5b-1d00d0a33675)
-
-We tried uploading a hidden PHP shell with the allowed extensions, and modified the header so that it is detected as a GIF.
-
-![{B17AF97E-7F07-4664-87C2-99D29A21787F}](https://github.com/user-attachments/assets/69f1ad06-a932-4a7f-be59-c3c1ea423793)
-
-When uploading it we get this error, but we have successfully uploaded it to the /upload/ directory.
-
-![{6F829296-7405-432A-BE76-F7379798D7D3}](https://github.com/user-attachments/assets/d9f2763a-d223-480a-b377-8d4948567a36)
-
-After hours and hours of searching, we see that in the index.php file that we downloaded using the previous LFI, there is another "include" that refers to "/lang+cookie".
-
-![image](https://github.com/user-attachments/assets/ebc7f4e4-5acf-4db6-bc1d-e953a4cf9a2f)
-
-We make the relevant modifications and point to the gif that contains the reverse shell.
-
-![image](https://github.com/user-attachments/assets/2ad6f64d-76e6-4f7f-a330-cbb7b3571883)
-
-We gained access to the server.
-
-![image](https://github.com/user-attachments/assets/8a95becd-449c-4ce6-8791-ef6a9208a4f4)
-
-We become Noelia and read the flag.
-
-![image](https://github.com/user-attachments/assets/dbf76131-6a08-4336-8a80-a3acd7baf15a)
-
-![image](https://github.com/user-attachments/assets/b3335526-a114-4740-919d-56965bbb847e)
-
-
-**flag.txt Contents:**
-
-```
-flag{30afT3klsan:elo}
-```
-
-We read with strings the program we found on Noelia's home page.
-
-![image](https://github.com/user-attachments/assets/aa9c75da-38a1-49f4-b146-bff79d161243)
-
-We see that it uses cat in a relative path, we create our cat that contains /bin/bash, and we modify the path so that it executes the one we have in Noelia's home directory.
-
-![image](https://github.com/user-attachments/assets/13ecb6da-2f8f-42ca-ab49-c9210d772b6b)
-
-We run and become Mike.
-
-![image](https://github.com/user-attachments/assets/e1c6c784-a140-4607-9834-771db5e3ab52)
-
-We watch another program.
-
-![image](https://github.com/user-attachments/assets/c84739c6-65ad-405a-b0fa-7cd4bc6aa10f)
-
-Same procedure, we see the program with strings.
-
-![image](https://github.com/user-attachments/assets/ff0dcbd9-4270-4d2a-95da-8fa1d0c40399)
-
-We run the script and with commands we copy the bash to /tmp/, we run it and we see that we are now root.
-
-![image](https://github.com/user-attachments/assets/ff6e765f-1ca2-42c1-9e7a-de33b96f7940)
-
-We see the root flag.
-
-![image](https://github.com/user-attachments/assets/cec5974c-7d12-4931-82cc-48a25658c34b)
+![image](https://github.com/user-attachments/assets/2170ec29-54c3-42b8-b6b0-4b08a75832fd)
 
 
 **flag.txt Root Contents:**
 
 ```
-flag{F1L0m3n4_forEver}
+Flag:{FYh73aoplksT990ss}
 ```
 
 
