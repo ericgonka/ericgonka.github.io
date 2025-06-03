@@ -100,7 +100,7 @@ Information gathering is critical in penetration testing. In this case, the scop
 | UDP      |               |
 
 
-Configuramos el DNS en el BurpSuite ya que nos redirige al subdominio `formacion.dorvack.corp`
+We configure the DNS in BurpSuite since it redirects us to the subdomain `formacion.dorvack.corp`
 
 ![image](https://github.com/user-attachments/assets/cd5a4ab0-cb4c-479e-8f03-08e17eb03be6)
 
