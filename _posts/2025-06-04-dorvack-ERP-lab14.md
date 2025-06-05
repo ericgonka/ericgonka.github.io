@@ -102,7 +102,7 @@ Information gathering is critical in penetration testing. In this case, the scop
 
 ![image](https://github.com/user-attachments/assets/d38e78f7-753e-4ae8-91f2-a6032ea0c38d)
 
-Vemos que hay una página web con un drupal, y viendo la url me da que pensar que se puede tratar de un SQL Injection.
+We see there's a website running Drupal, and judging by the URL, I suspect it could be vulnerable to SQL Injection.
 
 ![image](https://github.com/user-attachments/assets/8ec61648-31b1-4b5d-be44-0a9405f04ccd)
 
@@ -129,40 +129,40 @@ _
 - **Severity:** Critical
 
 
-Probamos con sqlmap.
+We test with sqlmap.
 
 ![image](https://github.com/user-attachments/assets/8fa15285-44ca-479b-af17-c00b87fe3247)
 
-Efectivamente vemos que es vulnerable y nos muestra las dos bases de datos.
+Indeed, we can see it’s vulnerable and reveals two databases.
 
 ![image](https://github.com/user-attachments/assets/8d79d511-b069-443d-bb0a-108424544ee5)
 
-Dumpeamos de la base de datos d4db los usuarios y contraseñas.
+We dump the users and passwords from the `d4db` database.
 
 ![image](https://github.com/user-attachments/assets/a5a4ad4c-b4d1-4d07-b5b1-dac37ca0950e)
 ![image](https://github.com/user-attachments/assets/3aeff805-4cd2-451e-87c2-019628eb5dba)
 
-Copiamos los hashes encontrados y los crackeamos con john.
+We copy the found hashes and crack them using John.
 
 ![image](https://github.com/user-attachments/assets/a988d58e-59d4-49b4-b2ab-da8b3d124c9d)
 
-Vemos que nos ha encontrado la contraseña del usuario john.
+We find the password for user `john`.
 
 ![image](https://github.com/user-attachments/assets/0bb1bbc6-08a4-4074-9e3c-b6da83b3141f)
 
-Nos logeamos a la web.
+We log in to the web application.
 
 ![image](https://github.com/user-attachments/assets/bce86497-7d2d-4f93-a56c-63a8e18dd615)
 
-Despues de varias horas mirando, veo que podemos inyectar código php en el apartado del formulario de contacto.
+After several hours of analysis, I discover we can inject PHP code into the contact form section.
 
 ![image](https://github.com/user-attachments/assets/448f3931-e57d-4318-b6b7-05e1e294476e)
 
-Completamos el formulario y al enviarlo recibimos la reverse shell.
+We complete the form and upon submission, we receive a reverse shell.
 
 ![image](https://github.com/user-attachments/assets/1442968f-fc70-4b45-9c6f-0d694e8c9cc9)
 
-Filtramos como siempre por permisos SUID.
+We filter as usual by SUID permissions.
 
 ![image](https://github.com/user-attachments/assets/df4c8f1a-40a6-4d8e-8ce3-6df75d947bed)
 
@@ -187,23 +187,23 @@ _
 - **Severity:** Critical
 
 
-Me llama especialmente la atención el permiso exim4, voy a ver la versión instalada.
+The Exim4 permission especially catches my attention, so I check the installed version.
 
 ![image](https://github.com/user-attachments/assets/7c6e33cc-7a79-4d8e-a8ae-ff9e1e573094)
 
-Vemos que hay un exploit para exim de la version 4.87 a la 4.91.
+We see there’s an exploit for Exim versions 4.87 to 4.91.
 
 ![image](https://github.com/user-attachments/assets/4475afbb-9a43-434c-b2fa-7fbfcbc6d657)
 
-Lo mandamos al equipo víctima.
+We upload it to the victim machine.
 
 ![image](https://github.com/user-attachments/assets/1df4318f-fe89-439f-877b-89743adb0841)
 
-Le damos permisos de ejecución y lo ejecutamos.
+We grant execution permissions and run it.
 
 ![image](https://github.com/user-attachments/assets/fa0c2d04-ae8d-40c4-934f-3ab84a302642)
 
-Vemos que ya somos root y podemos leer la flag!
+We see we are now root and can read the flag!
 
 ![image](https://github.com/user-attachments/assets/70c14912-8916-4313-9c54-1abb1bbb9e14)
 
