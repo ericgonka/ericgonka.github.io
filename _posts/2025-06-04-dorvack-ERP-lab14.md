@@ -1,5 +1,5 @@
 ---
-title: "Penetration Test Report Dorvack-Fles LAB 12"
+title: "Penetration Test Report Dorvack-Fles LAB 14"
 author: ["ericgon28@proton.me", "OSID: XXXX"]
 date: "2025-05-25"
 subject: "Markdown"
@@ -19,14 +19,14 @@ categories:
 tags:
   - Difícil
   - CTF
-image: "https://github.com/user-attachments/assets/d2511954-8b56-4fda-a562-4aa5e3e53dd1"
+image: "https://github.com/user-attachments/assets/5f10c3b9-55c2-4feb-bb82-0d979cea12d5"
 
 ---
 
 ![image](https://github.com/user-attachments/assets/0c2115d0-30f0-499e-a110-7e88e069a4d1)
 
 
-#Penetration Test Report Dorvack-Teacher LAB 12
+#Penetration Test Report Dorvack-Teacher LAB 14
 **Version**: 3.2  
 **OSID**: XXXXX  
 **Email**: ericgon28@proton.me 
@@ -70,7 +70,7 @@ The student is required to fill out this report fully, including the following s
 ## 2. High-Level Summary
 
 ### Compromised Hosts
-- **192.168.1.121 (formacion.dorvack.corp)** – Dorvack-Teacher Web
+- **192.168.1.134** – Dorvack-ERP Web
 ---
 
 ### 2.1 Recommendations
@@ -82,141 +82,137 @@ It is recommended that the identified vulnerabilities be patched immediately to 
 
 ### 3.1 Information Gathering
 Information gathering is critical in penetration testing. In this case, the scope of the test covered the following IP addresses:
-- `192.168.1.123`
+- `192.168.1.134`
 
 ---
 
 ### 3.2 Penetration
 
 #### System IP: `172.20.0.235` 
-#### Intranet Dorvack-Teacher IP: `192.168.1.121`
+#### Intranet Dorvack-Teacher IP: `192.168.1.134`
 
 **Service Enumeration:**
-- **Dorvack-Teacher IP Address:** 192.168.1.121
+- **Dorvack-ERP IP Address:** 192.168.1.134
 
 | Protocol | Port(s)       |
 |----------|---------------|
-| TCP      | 80            |
+| TCP      | 22, 80        |
 | UDP      |               |
 
 
-We configure the DNS in BurpSuite since it redirects us to the subdomain `formacion.dorvack.corp`
+![image](https://github.com/user-attachments/assets/d38e78f7-753e-4ae8-91f2-a6032ea0c38d)
 
-![image](https://github.com/user-attachments/assets/cd5a4ab0-cb4c-479e-8f03-08e17eb03be6)
+Vemos que hay una página web con un drupal, y viendo la url me da que pensar que se puede tratar de un SQL Injection.
 
-We connect to the web to see what it is about.
+![image](https://github.com/user-attachments/assets/8ec61648-31b1-4b5d-be44-0a9405f04ccd)
 
-![image](https://github.com/user-attachments/assets/8b898e55-26a7-414a-8290-8f91ab6a1cd4)
 
 ##### Initial Shell Vulnerability Exploited  
 
-- _Moodle 3.9 - Remote Code Execution (RCE) (Authenticated)_  
+- _SQL Injection_  
 - **Vulnerability Explanation:**  
-  _This vulnerability allows an authenticated user with specific permissions (such as a teacher or manager) to execute arbitrary PHP code on the underlying server. The issue arises due to improper validation of user-supplied input in certain Moodle components (such as quiz or file upload plugins), allowing malicious payloads to be injected and executed on the server. Once exploited, this can lead to full server compromise._
+  _The application fails to properly sanitize user input in SQL queries, allowing attackers to inject malicious SQL code. This can lead to unauthorized access to the database, data leakage, and potentially full system compromise if combined with other vulnerabilities. In this case, SQL injection was used to gain initial shell access to the target system._
   
 - **Vulnerability Fix:**  
   _To mitigate this issue:
-To mitigate this issue:
+  
+Use parameterized queries (prepared statements) instead of dynamic SQL.
 
-Upgrade to the latest supported version of Moodle, as the vulnerability has been patched in newer releases.
+Employ input validation to ensure user inputs conform to expected formats.
 
-Apply any available security patches from the official Moodle security advisories.
+Apply the principle of least privilege to database accounts.
 
-Restrict user roles and permissions to the minimum necessary, especially those with file upload or quiz configuration capabilities.
+Regularly update and patch the database management system (DBMS) and application.
 
-Monitor logs for unusual activity from authenticated users.
+Conduct security code reviews and regular penetration testing.
 _  
 - **Severity:** Critical
 
 
-After some time researching, we found a script for Moodle version 3.9 that is quite interesting, as it indicates it’s an authenticated RCE, and we have valid username and password credentials.
+Probamos con sqlmap.
 
-![image](https://github.com/user-attachments/assets/0b411672-c6d9-419d-963d-295e65a36d89)
+![image](https://github.com/user-attachments/assets/8fa15285-44ca-479b-af17-c00b87fe3247)
 
-We run the script, but it doesn’t work, as it needs to add our user to the `manager` group in order to access the admin panel and insert the reverse shell.
+Efectivamente vemos que es vulnerable y nos muestra las dos bases de datos.
 
-![image](https://github.com/user-attachments/assets/7fdfcd90-a68b-4233-95a6-5c35fd0236f6)
+![image](https://github.com/user-attachments/assets/8d79d511-b069-443d-bb0a-108424544ee5)
 
-After heavily modifying the script based on the server’s responses and removing what wasn’t necessary, it seems to have worked, and we now have access to the admin panel.
+Dumpeamos de la base de datos d4db los usuarios y contraseñas.
 
-![image](https://github.com/user-attachments/assets/a80a8258-f2a3-4b81-8526-9a7951be97f8)
+![image](https://github.com/user-attachments/assets/a5a4ad4c-b4d1-4d07-b5b1-dac37ca0950e)
+![image](https://github.com/user-attachments/assets/3aeff805-4cd2-451e-87c2-019628eb5dba)
 
-We see that we can upload a zip file pretending we are installing a new module, but in reality, it’s to execute commands.
+Copiamos los hashes encontrados y los crackeamos con john.
 
-![image](https://github.com/user-attachments/assets/88e3bc4f-8ef6-4120-8291-e96d9ab62189)
+![image](https://github.com/user-attachments/assets/a988d58e-59d4-49b4-b2ab-da8b3d124c9d)
 
-We go to the section for **Instalar módulos externos** and install the zip.
+Vemos que nos ha encontrado la contraseña del usuario john.
 
-![image](https://github.com/user-attachments/assets/54cf1830-4fe2-4fb8-9223-a9b19d957079)
+![image](https://github.com/user-attachments/assets/0bb1bbc6-08a4-4074-9e3c-b6da83b3141f)
 
-It validates it and we proceed with the installation.
+Nos logeamos a la web.
 
-![image](https://github.com/user-attachments/assets/d7e45ad5-35c6-46a8-9798-b02b035014bc)
+![image](https://github.com/user-attachments/assets/bce86497-7d2d-4f93-a56c-63a8e18dd615)
 
-It gives us information regarding the installation and plugin verification.
+Despues de varias horas mirando, veo que podemos inyectar código php en el apartado del formulario de contacto.
 
-![image](https://github.com/user-attachments/assets/a0cae167-107b-43ac-985c-8ae18fdf420b)
+![image](https://github.com/user-attachments/assets/448f3931-e57d-4318-b6b7-05e1e294476e)
 
-![image](https://github.com/user-attachments/assets/971965cc-ea26-44b6-80ad-793b0e8ee472)
+Completamos el formulario y al enviarlo recibimos la reverse shell.
 
-We try to execute a simple `id` command and see that we do, in fact, have command execution capabilities.
+![image](https://github.com/user-attachments/assets/1442968f-fc70-4b45-9c6f-0d694e8c9cc9)
 
-![image](https://github.com/user-attachments/assets/fb989c0b-f6bd-4f40-8290-d15c624de85a)
+Filtramos como siempre por permisos SUID.
 
-We send ourselves a URL-encoded reverse shell.
-
-![image](https://github.com/user-attachments/assets/e3ff835e-d9fc-4bba-b035-c3c4ca0f4e9b)
-
-We start listening and gain access to the system.
-
-![image](https://github.com/user-attachments/assets/b1786e81-d20a-4b81-978b-0210802c1ea2)
-
-We check the available users on the system, and since we see `noelia`, we proceed to migrate using the password we already have.
-
-![image](https://github.com/user-attachments/assets/8ed8aabc-685d-418b-b363-0b3641465bf1)
+![image](https://github.com/user-attachments/assets/df4c8f1a-40a6-4d8e-8ce3-6df75d947bed)
 
 ##### Privilege Escalation Vulnerability Exploited  
 
-- _SUID Polkit's Pkexec_  
+- _Exim4 SUID_
 - **Vulnerability Explanation:**  
-  _CVE-2021-4034 (nicknamed PwnKit) is a local privilege escalation vulnerability found in pkexec, a SUID-root program that is part of Polkit. The vulnerability exists because pkexec does not properly validate the number of arguments passed to it. This allows an attacker to manipulate environment variables—specifically GCONV_PATH—to load a malicious shared library and execute arbitrary code as root. Since pkexec is installed by default on many Linux distributions and is SUID-root, this can lead to full system compromise._
+  _Exim4, a mail transfer agent, was found to have a misconfigured or vulnerable SUID binary that could be exploited to execute arbitrary code with elevated (root) privileges. Attackers leveraged this flaw to escalate from a low-privileged shell to full root access. This often occurs when the Exim binary is improperly set with the SUID bit and contains a vulnerability such as command injection, buffer overflow, or improper input handling._
   
 - **Vulnerability Fix:**  
   _To mitigate this issue:
-Update to the latest version of Polkit where the vulnerability has been patched.
+Remove the SUID bit from the Exim4 binary unless explicitly required (chmod u-s /usr/sbin/exim4).
 
-Remove the SUID bit from pkexec if it's not needed:
+Ensure Exim is updated to the latest secure version, as older versions may contain known exploits (e.g., CVE-2019-10149).
 
-chmod 0755 /usr/bin/pkexec
+Restrict access to the Exim binary using file permissions and AppArmor/SELinux profiles.
 
-Monitor user activity and audit logs for unusual privilege escalation behavior.
+Monitor and audit SUID binaries regularly using tools like find / -perm -4000 -type f and validate necessity.
 
-Consider deploying intrusion detection tools to flag exploitation attempts.
+Apply principle of least privilege and use privilege separation wherever possible.
 _  
 - **Severity:** Critical
 
-We check the SUID permissions and `pkexec` particularly catches our attention.
 
-![image](https://github.com/user-attachments/assets/ea09b933-4c64-448c-85be-de82bf124479)
+Me llama especialmente la atención el permiso exim4, voy a ver la versión instalada.
 
-There’s a way to escalate privileges using an exploit called `Polkit's Pkexec`.
+![image](https://github.com/user-attachments/assets/7c6e33cc-7a79-4d8e-a8ae-ff9e1e573094)
 
-![image](https://github.com/user-attachments/assets/a38b4f92-1124-4bda-b17f-9806a5302d18)
+Vemos que hay un exploit para exim de la version 4.87 a la 4.91.
 
-We just need to transfer the `polkit_pwkit.py` script to the target machine and execute it.
+![image](https://github.com/user-attachments/assets/4475afbb-9a43-434c-b2fa-7fbfcbc6d657)
 
-![image](https://github.com/user-attachments/assets/a93b4eaa-2393-4bb5-a038-f01a743ad877)
+Lo mandamos al equipo víctima.
 
-And we would now be **root** and able to read the flag.
+![image](https://github.com/user-attachments/assets/1df4318f-fe89-439f-877b-89743adb0841)
 
-![image](https://github.com/user-attachments/assets/2170ec29-54c3-42b8-b6b0-4b08a75832fd)
+Le damos permisos de ejecución y lo ejecutamos.
 
+![image](https://github.com/user-attachments/assets/fa0c2d04-ae8d-40c4-934f-3ab84a302642)
+
+Vemos que ya somos root y podemos leer la flag!
+
+![image](https://github.com/user-attachments/assets/70c14912-8916-4313-9c54-1abb1bbb9e14)
+
+![image](https://github.com/user-attachments/assets/8288f742-109b-4af1-8374-1c1f00806675)
 
 **flag.txt Root Contents:**
 
 ```
-Flag:{FYh73aoplksT990ss}
+flag:{Fj987akjs34590.ld}
 ```
-
 
 **End of Report**
